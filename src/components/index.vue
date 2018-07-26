@@ -586,8 +586,18 @@
     </div>
 </template>
 <script>
-export default {
+ //引入axios
+    import axios from 'axios';
     
+export default {
+   
+    beforeMount(){
+        axios.get('http://47.106.148.205:8899/site/goods/gettopdata/goods').thon((response)=>{
+
+        }).catch((error)=>{
+
+        });
+    }
 }
 </script>
 <style scoped>
