@@ -17,24 +17,33 @@ Vue.prototype.axios = axios;
 
 // 导入懒加载插件
 import VueLazyload from 'vue-lazyload'
+// 引入goodsinfo组件
+import goodsinfo from './components/goodsinfo.vue'
 
 // 使用路由中间件
 Vue.use(VueRouter);
 // 使用ui中间件
 Vue.use(ElementUI);
 // 使用懒加载中间件
-Vue.use(VueLazyload,{
-  loading:require('./assets/statics/lib/images/01.gif')
+Vue.use(VueLazyload, {
+  loading: require('./assets/statics/lib/images/01.gif')
 });
 
 
 // 注册路由规则
 const router = new VueRouter({
-  routes:[
-    {path:'/' ,redirect: '/index'},
+  routes: [{
+
+      path: '/',
+      redirect: '/index' //重定向
+    },
     {
-      path:'/index',
-      component:index
+      path: '/index',
+      component: index
+    },
+    {
+      path: "/goodsinfo/:id",
+      component: goodsinfo
     }
   ]
 })
@@ -46,7 +55,7 @@ Vue.config.productionTip = false
 
 new Vue({
   // 选择器
-  el:"#app",
+  el: "#app",
   // 挂载到vue
   router,
   // 渲染 App组件
