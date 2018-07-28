@@ -8,10 +8,25 @@ import index from './components/index.vue'
 import ElementUI from "element-ui";
 // 导入css
 import "element-ui/lib/theme-chalk/index.css";
+//导入axios
+import axios from "axios";
+//给全局axios默认值每个请求的配置默认值
+axios.defaults.baseURL = 'http://47.106.148.205:8899';
+//把axios对象放入vue的原型中 公用
+Vue.prototype.axios = axios;
+
+// 导入懒加载插件
+import VueLazyload from 'vue-lazyload'
+
 // 使用路由中间件
 Vue.use(VueRouter);
 // 使用ui中间件
 Vue.use(ElementUI);
+// 使用懒加载中间件
+Vue.use(VueLazyload,{
+  loading:require('./assets/statics/lib/images/01.gif')
+});
+
 
 // 注册路由规则
 const router = new VueRouter({

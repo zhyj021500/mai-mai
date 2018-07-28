@@ -85,7 +85,7 @@
                         <li v-for="(itemson, i) in item.datas " :key="itemson.artID">
                             <a href="#/site/goodsinfo/87" class="">
                                 <div class="img-box">
-                                    <img :src="itemson.img_url">
+                                    <img v-lazy="itemson.img_url">
                                 </div>
                                 <div class="info">
                                     <h3>{{itemson.artTitle}}</h3>
@@ -110,7 +110,7 @@
 </template>
 <script>
 //引入axios
-import axios from "axios";
+
 import moment from "moment";
 //http://47.106.148.205:8899/site/goods/gettopdata/goods
 export default {
@@ -131,8 +131,8 @@ export default {
   },
   beforeMount() {
     //获取首页的上部做的的数据
-    axios
-      .get("http://47.106.148.205:8899/site/goods/gettopdata/goods")
+    this.axios
+      .get("/site/goods/gettopdata/goods")
       .then(response => {
         // handle success
         //console.log(response.data.message.catelist);
@@ -147,8 +147,8 @@ export default {
         //console.log(error);
       });
       // 获取底部的商品列表数据
-      axios
-      .get("http://47.106.148.205:8899/site/goods/getgoodsgroup")
+      this.axios
+      .get("/site/goods/getgoodsgroup")
       .then(response => {
         // handle success
         //console.log(response );
