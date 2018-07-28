@@ -111,7 +111,7 @@
 <script>
     //引入axios
 
-    import moment from "moment";
+    
     //http://47.106.148.205:8899/site/goods/gettopdata/goods
     export default {
         //数据
@@ -123,12 +123,7 @@
                 goodslist: []
             };
         },
-        //过滤
-        filters: {
-            cuttime(value) {
-                return moment(value).format("YYYY-MM-DD");
-            }
-        },
+    
         beforeMount() {
             //获取首页的上部做的的数据
             this.axios

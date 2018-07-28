@@ -10,10 +10,17 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 //导入axios
 import axios from "axios";
+import moment from "moment";
 //给全局axios默认值每个请求的配置默认值
 axios.defaults.baseURL = 'http://47.106.148.205:8899';
 //把axios对象放入vue的原型中 公用
 Vue.prototype.axios = axios;
+// 注册
+Vue.filter('cuttime', function (value) {
+  
+    return moment(value).format("YYYY-MM-DD");
+
+});
 
 // 导入懒加载插件
 import VueLazyload from 'vue-lazyload'

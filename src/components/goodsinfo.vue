@@ -40,16 +40,17 @@
                                         <dt>购买数量</dt>
                                         <dd>
                                             <div class="stock-box">
+                                                <!-- is-disabled -->
                                                 <div class="el-input-number el-input-number--small">
-                                                    <span role="button" class="el-input-number__decrease is-disabled">
-                                                        <i class="el-icon-minus"></i>
+                                                    <span role="button" class="el-input-number__decrease " :class="{'is-disabled':goodsNum==1}" >
+                                                        <i  @click="goodsNum==1?1:goodsNum--" class="el-icon-minus"></i>
                                                     </span>
-                                                    <span role="button" class="el-input-number__increase">
-                                                        <i class="el-icon-plus"></i>
+                                                    <span :class="{'is-disabled':goodsNum==goodsinfo.stock_quantity}" role="button" class="el-input-number__increase">
+                                                        <i  @click="goodsNum<goodsinfo.stock_quantity?goodsNum++:goodsinfo.stock_quantity"  class="el-icon-plus"></i>
                                                     </span>
                                                     <div class="el-input el-input--small">
                                                         <!---->
-                                                        <input autocomplete="off" size="small" type="text" rows="2" max="60"
+                                                        <input v-model="goodsNum" autocomplete="off" size="small" type="text" rows="2" max="60"
                                                             min="1" validateevent="true" class="el-input__inner" role="spinbutton"
                                                             aria-valuemax="60" aria-valuemin="1" aria-valuenow="1" aria-disabled="false">
                                                         <!---->
@@ -79,17 +80,17 @@
                             <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
                                 <ul>
                                     <li>
-                                        <a href="javascript:;" class="selected">商品介绍</a>
+                                        <a href="javascript:;" @click="isShowDesc =true"  :class="{'selected':isShowDesc}">商品介绍</a>
                                     </li>
                                     <li>
-                                        <a href="javascript:;">商品评论</a>
+                                        <a href="javascript:;" @click="isShowDesc =false" :class="{'selected': !isShowDesc}" >商品评论</a>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="tab-content entry" style="display: block;">
+                            <div v-html="goodsinfo.content" class="tab-content entry" v-show="isShowDesc">
                                 内容
                             </div>
-                            <div class="tab-content" style="display: block;">
+                            <div class="tab-content" v-show="!isShowDesc">
                                 <div class="comment-box">
                                     <div id="commentForm" name="commentForm"
                                         class="form-box">
@@ -150,94 +151,22 @@
                             <div class="sidebar-box">
                                 <h4>推荐商品</h4>
                                 <ul class="side-img-list">
-                                    <li>
+                                    <li v-for="(item, index) in hotgoodslist" :key="item.id">
                                         <div class="img-box">
-                                            <a href="#/site/goodsinfo/90" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200154277661.jpg">
-                                            </a>
+                                            <router-link :to="`/goodsInfo/`+item.id">
+                                                <img :src="item.img_url">
+                                            </router-link>
+                                            
+                                          
                                         </div>
                                         <div class="txt-box">
-                                            <a href="#/site/goodsinfo/90" class="">佳能（Canon） EOS 700D 单反套机</a>
-                                            <span>2015-04-20</span>
+                                            <router-link :to="`/goodsInfo/`+item.id">
+                                            {{item.title}}
+                                            </router-link>
+                                            <span>{{item.add_time |cuttime }}</span>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/91" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200214471783.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/91" class="">尼康(Nikon)D3300套机（18-55mm f/3.5-5.6G VRII）（黑色）</a>
-                                            <span>2015-04-20</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/92" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200225107390.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/92" class="">联想（Lenovo） G510AM 15.6英寸笔记本电脑</a>
-                                            <span>2015-04-20</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/93" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/201504200341260763.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/93" class="">Apple iMac MF883CH/A 21.5英寸一体机电脑</a>
-                                            <span>2015-04-20</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/94" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200239192345.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/94" class="">金士顿（Kingston） DataTraveler SE9 32GB 金属U盘</a>
-                                            <span>2015-04-20</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/97" class="">
-                                                <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200258403759.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/97" class="">三星（SAMSUNG）UA40HU5920JXXZ 40英寸4K超高清</a>
-                                            <span>2015-04-20</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/102" class="">
-                                                <img src="http://39.108.135.214:8899/imgs/wTgAWDLpQReTQ-ZOMdlAk4vF.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/102" class="">Hazzys哈吉斯2017新款男士长袖衬衫纯棉修身英伦衬衫显瘦商务衬衣</a>
-                                            <span>2017-09-13</span>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="img-box">
-                                            <a href="#/site/goodsinfo/103" class="">
-                                                <img src="http://39.108.135.214:8899/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg">
-                                            </a>
-                                        </div>
-                                        <div class="txt-box">
-                                            <a href="#/site/goodsinfo/103" class="">骆驼男装2017秋季新款运动休闲纯色夹克青年宽松长袖针织开衫卫衣</a>
-                                            <span>2017-09-26</span>
-                                        </div>
-                                    </li>
+                                
                                 </ul>
                             </div>
                         </div>
@@ -254,7 +183,11 @@ export default {
         return{
             goodsinfo:{},
             hotgoodslist:[],
-            imglist:[]
+            imglist:[],
+            //购买的商品数
+            goodsNum:1,
+            // 记录显示哪个区域的变量
+            isShowDesc:true
         }
     },
     methods:{
@@ -283,6 +216,14 @@ export default {
     mounted() {
         
     },
+    // 观察属性 属性值改变时自动调用
+    watch:{
+          // to 新值  from 老值
+        $route(to, from) {
+        // 对路由变化作出响应...
+        this.getGoodsInfo();
+        }
+    }
 }
 </script>
 <style scoped>
