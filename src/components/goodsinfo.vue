@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                     <ul id="commentList" class="list-box">
-                                        <p style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);">暂无评论，快来抢沙发吧！</p>
+                                        <p v-if='conmensMessage.length!=0' style="margin: 5px 0px 15px 69px; line-height: 42px; text-align: center; border: 1px solid rgb(247, 247, 247);">暂无评论，快来抢沙发吧！</p>
                                         <li>
                                             <div class="avatar-box">
                                                 <i class="iconfont icon-user-full"></i>
@@ -143,11 +143,7 @@
                                         </li>
                                     </ul>
                                     <div class="page-box" style="margin: 5px 0px 0px 62px;">
-                                        <div id="pagination" class="digg">
-                                            <span class="disabled">« 上一页</span>
-                                            <span class="current">1</span>
-                                            <span class="disabled">下一页 »</span>
-                                        </div>
+                                            <Page :total="totalCount" :page-size='pagesize' @on-change="getPage" @on-page-size-change="getPageSize" placement="top" :page-size-opts='[5, 10,15,20]' show-elevator show-sizer />
                                     </div>
                                 </div>
                             </div>
@@ -210,7 +206,12 @@
                     move_by_click: true,
                     scroll_items: 4,
                     choosed_thumb_border_color: "#ff3d00"
-                }
+                },
+                //分页的数据
+                totalCount:0,
+                pagesize:5,
+                pageIndex:1,
+                conmensMessage:[]
             };
         },
         methods: {
@@ -245,14 +246,51 @@
             cartAdd() {
                 let num = new Number(this.goodsNum)
                 this.$store.commit('increment', num);
+            },
+            //获取评论
+            getComment(){
+                this.axios
+                .get(`/site/comment/getbypage/goods/${this.$route.params.id}?pageIndex=${this.pageIndex}&pageSize=${this.pagesize}`)
+                .then((response)=>{
+                    //console.log(response);
+                   this.conmensMessage = response.data.message;
+                   this.totalCount = response.data.totalcount;
+                   // console.log(response.data.totalcount);
+                })
+                .catch((error)=>{
+                    
+                })
+            },
+            //获取页码
+            getPage(page){
+               // console.log(page);
+                this.pageIndex=page;
+                 //获取评论
+                 this.getComment();
+            },
+            //获取页容量
+            getPageSize(size){
+                //console.log(size);
+                this.pagesize = size;
+                 //获取评论
+                this.getComment();
             }
+
         },
         created() {
             console.log(this.$route.params.id);
             // console.log(this);
+            //获取商品详情
             this.getGoodsInfo();
+            //获取评论
+            this.getComment();
+            
         },
-        mounted() {},
+        mounted() {
+           
+           // console.log( this.totalCount);
+
+        },
         // 观察属性 属性值改变时自动调用
         watch: {
             // to 新值  from 老值
