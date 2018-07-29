@@ -1,5 +1,5 @@
 <template>
-     <div>
+    <div>
         <div class="section">
             <div class="location">
                 <span>当前位置：</span>
@@ -13,10 +13,13 @@
                 <div class="wrap-box">
                     <div class="left-925">
                         <div class="goods-box clearfix">
-                            <div class="pic-box"></div>
+                            <div v-if="imglist.length!=0" class="pic-box">
+
+                                <ProductZoomer :baseImages="images" :base-zoomer-options="zoomerOptions"></ProductZoomer>
+                            </div>
                             <div class="goods-spec">
                                 <h1>{{goodsinfo.title}}</h1>
-                            <p class="subtitle">{{goodsinfo.sub_title}}</p>
+                                <p class="subtitle">{{goodsinfo.sub_title}}</p>
                                 <div class="spec-box">
                                     <dl>
                                         <dt>货号</dt>
@@ -42,17 +45,17 @@
                                             <div class="stock-box">
                                                 <!-- is-disabled -->
                                                 <div class="el-input-number el-input-number--small">
-                                                    <span role="button" class="el-input-number__decrease " :class="{'is-disabled':goodsNum==1}" >
-                                                        <i  @click="goodsNum==1?1:goodsNum--" class="el-icon-minus"></i>
+                                                    <span role="button" class="el-input-number__decrease " :class="{'is-disabled':goodsNum==1}">
+                                                        <i @click="goodsNum==1?1:goodsNum--" class="el-icon-minus"></i>
                                                     </span>
                                                     <span :class="{'is-disabled':goodsNum==goodsinfo.stock_quantity}" role="button" class="el-input-number__increase">
-                                                        <i  @click="goodsNum<goodsinfo.stock_quantity?goodsNum++:goodsinfo.stock_quantity"  class="el-icon-plus"></i>
+                                                        <i @click="goodsNum<goodsinfo.stock_quantity?goodsNum++:goodsinfo.stock_quantity" class="el-icon-plus"></i>
                                                     </span>
                                                     <div class="el-input el-input--small">
                                                         <!---->
-                                                        <input v-model="goodsNum" autocomplete="off" size="small" type="text" rows="2" max="60"
-                                                            min="1" validateevent="true" class="el-input__inner" role="spinbutton"
-                                                            aria-valuemax="60" aria-valuemin="1" aria-valuenow="1" aria-disabled="false">
+                                                        <input v-model="goodsNum" autocomplete="off" size="small" type="text" rows="2" max="60" min="1" validateevent="true" class="el-input__inner"
+                                                            role="spinbutton" aria-valuemax="60" aria-valuemin="1" aria-valuenow="1"
+                                                            aria-disabled="false">
                                                         <!---->
                                                         <!---->
                                                         <!---->
@@ -67,33 +70,37 @@
                                     </dl>
                                     <dl>
                                         <dd>
+
                                             <div id="buyButton" class="btn-buy">
                                                 <button onclick="cartAdd(this,'/',1,'/shopping.html');" class="buy">立即购买</button>
-                                                <button onclick="cartAdd(this,'/',0,'/cart.html');" class="add">加入购物车</button>
+                                                <button @click="cartAdd" class="add">加入购物车</button>
                                             </div>
+
                                         </dd>
                                     </dl>
                                 </div>
                             </div>
                         </div>
                         <div id="goodsTabs" class="goods-tab bg-wrap">
-                            <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
-                                <ul>
-                                    <li>
-                                        <a href="javascript:;" @click="isShowDesc =true"  :class="{'selected':isShowDesc}">商品介绍</a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;" @click="isShowDesc =false" :class="{'selected': !isShowDesc}" >商品评论</a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <!-- 图钉 -->
+                            <Affix>
+                                <div id="tabHead" class="tab-head" style="position: static; top: 517px; width: 925px;">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:;" @click="isShowDesc =true" :class="{'selected':isShowDesc}">商品介绍</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;" @click="isShowDesc =false" :class="{'selected': !isShowDesc}">商品评论</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </Affix>
                             <div v-html="goodsinfo.content" class="tab-content entry" v-show="isShowDesc">
                                 内容
                             </div>
                             <div class="tab-content" v-show="!isShowDesc">
                                 <div class="comment-box">
-                                    <div id="commentForm" name="commentForm"
-                                        class="form-box">
+                                    <div id="commentForm" name="commentForm" class="form-box">
                                         <div class="avatar-box">
                                             <i class="iconfont icon-user-full"></i>
                                         </div>
@@ -103,7 +110,7 @@
                                                 <span class="Validform_checktip"></span>
                                             </div>
                                             <div class="subcon">
-                                                <input id="btnSubmit" name="submit" type="submit" value="提交评论" class="submit">
+                                                <input id="btnSubmit" name="submit" type="submit" @click="submitConmens" value="提交评论" class="submit">
                                                 <span class="Validform_checktip"></span>
                                             </div>
                                         </div>
@@ -156,17 +163,16 @@
                                             <router-link :to="`/goodsInfo/`+item.id">
                                                 <img :src="item.img_url">
                                             </router-link>
-                                            
-                                          
+
                                         </div>
                                         <div class="txt-box">
                                             <router-link :to="`/goodsInfo/`+item.id">
-                                            {{item.title}}
+                                                {{item.title}}
                                             </router-link>
                                             <span>{{item.add_time |cuttime }}</span>
                                         </div>
                                     </li>
-                                
+
                                 </ul>
                             </div>
                         </div>
@@ -174,60 +180,106 @@
                 </div>
             </div>
         </div>
+        <!-- 回到顶部 -->
+        <BackTop></BackTop>
     </div>
 </template>
 <script>
-export default {
-    name:"goodinfo",
-    data:function(){
-        return{
-            goodsinfo:{},
-            hotgoodslist:[],
-            imglist:[],
-            //购买的商品数
-            goodsNum:1,
-            // 记录显示哪个区域的变量
-            isShowDesc:true
+    //导入放大镜插件
+    import ProductZoomer from "vue-product-zoomer";
+    export default {
+        name: "goodinfo",
+        data: function () {
+            return {
+                goodsinfo: {},
+                hotgoodslist: [],
+                imglist: [],
+                //购买的商品数
+                goodsNum: 1,
+                // 记录显示哪个区域的变量
+                isShowDesc: true,
+                //放大镜配置
+                images: {
+                    normal_size: []
+                },
+                zoomerOptions: {
+                    zoomFactor: 4,
+                    pane: "container",
+                    hoverDelay: 300,
+                    namespace: "container-zoomer",
+                    move_by_click: true,
+                    scroll_items: 4,
+                    choosed_thumb_border_color: "#ff3d00"
+                }
+            };
+        },
+        methods: {
+            //获取商品详情数据
+            getGoodsInfo() {
+                this.axios
+                    .get(`/site/goods/getgoodsinfo/${this.$route.params.id}`)
+                    .then(response => {
+                        // console.log(response);
+                        this.goodsinfo = response.data.message.goodsinfo;
+                        this.hotgoodslist = response.data.message.hotgoodslist;
+                        this.imglist = response.data.message.imglist;
+                        //获取轮播图数据
+                        this.imglist.forEach((v, i) => {
+                            this.images.normal_size.push({
+                                id: v.id,
+                                url: v.original_path
+                            })
+
+                        });
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            },
+            //提交评论
+            submitConmens() {
+                this.$Message.error('你是剁手党吗');
+            },
+            //添加购物车
+            cartAdd() {
+                let num = new Number(this.goodsNum)
+                this.$store.commit('increment', num);
+            }
+        },
+        created() {
+            console.log(this.$route.params.id);
+            // console.log(this);
+            this.getGoodsInfo();
+        },
+        mounted() {},
+        // 观察属性 属性值改变时自动调用
+        watch: {
+            // to 新值  from 老值
+            $route(to, from) {
+                // 对路由变化作出响应...
+                this.getGoodsInfo();
+            }
+        },
+        components: {
+            //注册组件
+            ProductZoomer
         }
-    },
-    methods:{
-        //获取商品详情数据
-        getGoodsInfo(){
-            this.axios
-            .get(`/site/goods/getgoodsinfo/${this.$route.params.id}`)
-            .then((response)=>{
-               // console.log(response);
-               this.goodsinfo = response.data.message.goodsinfo;
-               this.hotgoodslist = response.data.message.hotgoodslist;
-               this.imglist = response.data.message.imglist;
-                
-            })
-            .catch((error)=>{
-                console.log(error);
-                
-            });
-        }
-    },
-    created(){
-        console.log(this.$route.params.id);
-       // console.log(this);
-        this.getGoodsInfo();
-    },
-    mounted() {
-        
-    },
-    // 观察属性 属性值改变时自动调用
-    watch:{
-          // to 新值  from 老值
-        $route(to, from) {
-        // 对路由变化作出响应...
-        this.getGoodsInfo();
-        }
-    }
-}
+    };
 </script>
-<style scoped>
- 
+<style>
+    /* 导入字体图标的样式 */
+    @import url("../../node_modules/font-awesome/css/font-awesome.min.css");
+    .container-zoomer-zoomer-box {
+        width: 368px;
+    }
+
+    .thumb-list img {
+        height: 78px;
+        width: 78px;
+        margin: 5px;
+    }
+    .control i {
+  text-align: center;
+}
 </style>
-
-
