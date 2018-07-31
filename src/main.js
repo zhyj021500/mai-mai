@@ -4,6 +4,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 // 引入index组件
 import index from './components/index.vue'
+import buyCar from './components/buyCar.vue'
 // 引入css
 import './assets/statics/site/css/style.css';
 // 导入ui框架
@@ -63,22 +64,50 @@ const router = new VueRouter({
     {
       path: "/goodsinfo/:id",
       component: goodsinfo
+    },
+    {
+      path:'/buyCar',
+      component: buyCar
     }
   ]
-})
+});
+// 判断数据是否存在
+let buyList = JSON.parse(window.localStorage.getItem('buyList'))||{};
 
 // 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    count: 0
+   buyList
   },
   mutations: {
-    increment (state,num) {
-      state.count+=num
+   buyGoods(state,info){
+    if (state.buyList[info.goodId]) {
+      // 解决字符串累加问题
+      let oldNum = parseInt(state.buyList[info.goodId]);
+      oldNum += parseInt(info.goodNum);
+      // 重新赋值
+      state.buyList[info.goodId] = oldNum;
+    } else {
+      // 没有 直接赋值这种方法 vue不会跟踪属性
+      // state.buyList[info.goodId]=info.goodNum;
+      // 需要使用 Vue.set(obj, 'newProp', 123) 替代
+      Vue.set(state.buyList, info.goodId, parseInt(info.goodNum));
+    }
+   }
+  },
+  getters:{
+    totalCount(state) {
+      let num = 0;
+      // 遍历对象
+      for (const key in state.buyList) {
+        // 累加总数
+        num += parseInt(state.buyList[key]);
+      }
+      return num;
     }
   }
-})
+});
 
 Vue.config.productionTip = false
 
@@ -91,4 +120,11 @@ new Vue({
   render: h => h(App),
   // 挂载
   store
-})
+});
+// 注册一些逻辑
+window.onbeforeunload = function () {
+  // alert('onbeforeunload');
+  // window.localStorage.setItem('onbeforeunload',123);
+  window.localStorage.setItem('buyList',JSON.stringify(store.state.buyList));
+}
+

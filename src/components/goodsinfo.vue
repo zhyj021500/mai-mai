@@ -300,21 +300,19 @@ export default {
         $('.moveImg').show().addClass('move').css(offset).animate(cartOffset,1000,()=>{
             $('.moveImg').removeClass('move').hide();
         });
-      let num = new Number(this.goodsNum);
-      this.$store.commit("increment", num);
+         // 修改vuex中的数据值 
+    
+      this.$store.commit("buyGoods", {goodId:this.$route.params.id,goodNum:this.goodsNum});
     }
   },
   created() {
-    console.log(this.$route.params.id);
-    // console.log(this);
+ 
     //获取商品详情
     this.getGoodsInfo();
     //获取评论
     this.getComment();
   },
-  mounted() {
-    // console.log( this.totalCount);
-  },
+
   // 观察属性 属性值改变时自动调用
   watch: {
     // to 新值  from 老值
