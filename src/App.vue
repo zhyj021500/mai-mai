@@ -10,17 +10,18 @@
                     <a target="_blank" href="#"></a>
                     <a target="_blank" href="#"></a>
                 </div>
-                <div id="menu" class="right-box">
-                    <span style="display: none;">
-                        <a href="" class="">登录</a>
+                <div id="menu" class="right-box" >
+                    <span v-if="$store.state.isLogin==false" >
+                        <router-link to="/login">登录</router-link>
+                        
                         <strong>|</strong>
                         <a href="" class="">注册</a>
                         <strong>|</strong>
                     </span>
-                    <span>
+                    <span v-if="$store.state.isLogin==true"  >
                         <a href="" class="">会员中心</a>
                         <strong>|</strong>
-                        <a>退出</a>
+                        <a @click="logout">退出</a>
                         <strong>|</strong>
                     </span>
                    <router-link to="/buyCar">
@@ -146,7 +147,32 @@ export default {
           .animate({ top: "-48px" }, 300); // move up - hide
       }
     );
+  },
+   methods: {
+    //登出
+    logout() {
+      // 调用登出接口即可
+      this.axios
+        .get("/site/account/logout")
+        .then(response => {
+         // console.log(response);
+          if (response.data.status == 0) {
+            // 登出成功
+            this.$Message.success("欢迎再来");
+            //   修改vuex中的数据
+            this.$store.commit('changeLogin',false);
+            // 延迟跳转
+            setTimeout(() => {
+              this.$router.push("/index");
+            }, 500);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
+
 };
 </script>
 

@@ -20,13 +20,13 @@
 
                     <div id="loginform" name="loginform" class="login-box">
                         <div class="input-box">
-                            <input id="txtUserName" name="txtUserName" type="text" placeholder="用户名/手机/邮箱" maxlength="50">
+                            <input id="txtUserName" v-model="user_name" name="txtUserName" type="text" placeholder="用户名/手机/邮箱" maxlength="50">
                         </div>
                         <div class="input-box">
-                            <input id="txtPassword" name="txtPassword" type="password" placeholder="输入登录密码" maxlength="16">
+                            <input id="txtPassword" v-model="password" name="txtPassword" type="password" placeholder="输入登录密码" maxlength="16">
                         </div>
                         <div class="btn-box">
-                            <input id="btnSubmit" name="btnSubmit" type="submit" value="立即登录">
+                            <input id="btnSubmit" name="btnSubmit" @click="login" type="submit" value="立即登录">
                         </div>
                     </div>
                 </div>
@@ -36,7 +36,37 @@
 </template>
 <script>
 export default {
-    
+    data:function(){
+        return{
+            user_name:'admin',
+            password:'123'
+        }
+    },
+    methods:{
+        login(){
+            this.axios.post('/site/account/login',{
+                user_name:this.user_name,
+                password:this.password
+            })
+            .then(response=>{
+                //console.log(response);
+                if(response.data.status == 0){
+                    //弹框
+                    this.$Message.success(response.data.message);
+                     //修改登录状态
+                    this.$store.commit('changeLogin',true);
+                }else{
+                    //弹框
+                    this.$Message.error(response.data.message);
+                    this.password="";
+                }
+                
+            }).catch(error=>{
+                console.log(error);
+                
+            })
+        }
+    }
 }
 </script>
 <style scoped>

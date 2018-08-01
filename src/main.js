@@ -92,7 +92,10 @@ let buyList = JSON.parse(window.localStorage.getItem('buyList'))||{};
 // 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
-   buyList
+    //购物车数据
+   buyList,
+   //登录状态
+   isLogin:false
   },
   mutations: {
    buyGoods(state,info){
@@ -118,6 +121,10 @@ const store = new Vuex.Store({
    delGoodById(state,id){
      // 告诉Vue我已经删除了这个属性
      Vue.delete(state.buyList,id);
+   },
+   //修改登录状态
+   changeLogin(state,isLogin){
+     state.isLogin = isLogin;
    }
 
   },
