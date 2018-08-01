@@ -94,7 +94,18 @@ const store = new Vuex.Store({
       // 需要使用 Vue.set(obj, 'newProp', 123) 替代
       Vue.set(state.buyList, info.goodId, parseInt(info.goodNum));
     }
+    
+   },
+    // 直接更新 某个id对应的数值
+   changeCount(state,info){
+    state.buyList[info.goodId] = info.goodNum;
+   },
+   //删除某个id对应的数值
+   delGoodById(state,id){
+     // 告诉Vue我已经删除了这个属性
+     Vue.delete(state.buyList,id);
    }
+
   },
   getters:{
     totalCount(state) {
