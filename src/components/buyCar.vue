@@ -111,7 +111,7 @@
                             <button class="button" >继续购物</button>
 
                             </router-link>
-                            <router-link to="/login">
+                            <router-link to="/payOrder">
                             <button >立即结算</button>
                             </router-link>
                         </div>

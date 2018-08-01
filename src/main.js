@@ -5,6 +5,8 @@ import VueRouter from 'vue-router'
 // 引入index组件
 import index from './components/index.vue'
 import buyCar from './components/buyCar.vue'
+import payOrder from './components/payOrder.vue'
+import login from './components/login.vue'
 // 引入css
 import './assets/statics/site/css/style.css';
 // 导入ui框架
@@ -68,6 +70,14 @@ const router = new VueRouter({
     {
       path:'/buyCar',
       component: buyCar
+    },
+    {
+      path:'/payOrder',
+      component: payOrder
+    },
+    {
+      path:'/login',
+      component: login
     }
   ]
 });
