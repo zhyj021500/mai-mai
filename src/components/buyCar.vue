@@ -108,11 +108,11 @@
                     <div class="cart-foot clearfix">
                         <div class="right-box">
                             <router-link to="/index">
-                            <button class="button" >继续购物</button>
+                                <button class="button">继续购物</button>
 
                             </router-link>
                             <router-link to="/payOrder">
-                            <button >立即结算</button>
+                                <button>立即结算</button>
                             </router-link>
                         </div>
                     </div>
@@ -158,7 +158,7 @@ export default {
   },
   created() {
     // 进来加载框显示
-      this.$Spin.show();
+    this.$Spin.show();
     //获取公共的数据
 
     let buyCar = this.$store.state.buyList;
@@ -167,7 +167,7 @@ export default {
       ids += key;
       ids += ",";
     }
-     // 判断是否有数据
+    // 判断是否有数据
     if (ids == "") {
       setTimeout(() => {
         this.buyCarMessage = [];
@@ -194,7 +194,7 @@ export default {
         // vue 开始跟踪 {id,价格,图片,buycount}
         this.buyCarMessage = response.data.message;
         // 进来加载框隐藏
-        setInterval(()=> {
+        setInterval(() => {
           this.$Spin.hide();
         }, 500);
       })
@@ -223,28 +223,30 @@ export default {
       this.showModal = false;
     }
   },
-  computed:{
-      //选中的数量
-      selectCount(){
-          let count = 0;
-          this.buyCarMessage.forEach(v=>{
-              if(v.isSelected){
-
-                  count += v.buycount;
-              }
-          })
-          return count;
-      },
+  computed: {
+    //选中的数量
+    selectCount() {
+      let count = 0;
+      // 非空判断
+      if (this.buyCarMessage == undefined) return count;
+      this.buyCarMessage.forEach(v => {
+        if (v.isSelected) {
+          count += v.buycount;
+        }
+      });
+      return count;
+    },
     //总金额
-    totalPrice(){
-            let totalPrice = 0;
-          this.buyCarMessage.forEach(v=>{
-              if(v.isSelected){
-
-                  totalPrice += v.buycount * v.sell_price;
-              }
-          })
-          return totalPrice;
+    totalPrice() {
+      let totalPrice = 0;
+      // 非空判断
+      if (this.buyCarMessage == undefined) return totalPrice;
+      this.buyCarMessage.forEach(v => {
+        if (v.isSelected) {
+          totalPrice += v.buycount * v.sell_price;
+        }
+      });
+      return totalPrice;
     }
   }
 };

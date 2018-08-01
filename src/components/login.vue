@@ -55,6 +55,10 @@ export default {
                     this.$Message.success(response.data.message);
                      //修改登录状态
                     this.$store.commit('changeLogin',true);
+                     // 从哪来回哪去
+                     console.log(this.$store.state.fromPath);
+                     
+                     this.$router.push(this.$store.state.fromPath);
                 }else{
                     //弹框
                     this.$Message.error(response.data.message);

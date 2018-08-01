@@ -95,7 +95,9 @@ const store = new Vuex.Store({
     //购物车数据
    buyList,
    //登录状态
-   isLogin:false
+   isLogin:false,
+   // 来的路由
+   fromPath:''
   },
   mutations: {
    buyGoods(state,info){
@@ -125,8 +127,11 @@ const store = new Vuex.Store({
    //修改登录状态
    changeLogin(state,isLogin){
      state.isLogin = isLogin;
-   }
-
+   },
+      // 修改来时的路由
+    rememberFromPath(state,path){
+      state.fromPath = path;
+    }
   },
   getters:{
     totalCount(state) {
@@ -143,12 +148,15 @@ const store = new Vuex.Store({
 //路由守卫
 router.beforeEach((to, from, next) => {
  // console.log(from);
-  
+  // 保存数据
+  store.commit('rememberFromPath',from.path);
   // 去订单支付页
    if(to.path == '/payOrder'){
      axios.get('/site/account/islogin')
      .then(response=>{
-       // console.log(response);
+        console.log(response);
+        console.log(store.state.isLogin);
+        
         if(response.data.code == "nologin"){
          next('/login');
         }else{

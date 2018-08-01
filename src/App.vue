@@ -171,7 +171,17 @@ export default {
           console.log(err);
         });
     }
-  }
+  },
+//创建时调用
+beforeCreate(){
+      this.axios.get('/site/account/islogin')
+     .then(response=>{
+       this.$store.commit('changeLogin',response.data.code == "nologin");
+     })
+     .catch(error=>{
+
+     })
+}
 
 };
 </script>
