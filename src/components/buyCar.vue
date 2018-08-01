@@ -95,9 +95,9 @@
                                 <tr>
                                     <th align="right" colspan="8">
                                         已选择商品
-                                        <b class="red" id="totalQuantity">0</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
+                                        <b class="red" id="totalQuantity">{{selectCount}}</b> 件 &nbsp;&nbsp;&nbsp; 商品总金额（不含运费）：
                                         <span class="red">￥</span>
-                                        <b class="red" id="totalAmount">0</b>元
+                                        <b class="red" id="totalAmount">{{totalPrice}}</b>元
                                     </th>
                                 </tr>
                             </tbody>
@@ -107,8 +107,13 @@
                     <!--购物车底部-->
                     <div class="cart-foot clearfix">
                         <div class="right-box">
-                            <button class="button" onclick="javascript:location.href='/index.html';">继续购物</button>
-                            <button class="submit" onclick="formSubmit(this, '/', '/shopping.html');">立即结算</button>
+                            <router-link to="/index">
+                            <button class="button" >继续购物</button>
+
+                            </router-link>
+                            <router-link to="/login">
+                            <button >立即结算</button>
+                            </router-link>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -216,6 +221,30 @@ export default {
       this.buyCarMessage.splice(this.delIndex, 1);
       //关闭对话框
       this.showModal = false;
+    }
+  },
+  computed:{
+      //选中的数量
+      selectCount(){
+          let count = 0;
+          this.buyCarMessage.forEach(v=>{
+              if(v.isSelected){
+
+                  count += v.buycount;
+              }
+          })
+          return count;
+      },
+    //总金额
+    totalPrice(){
+            let totalPrice = 0;
+          this.buyCarMessage.forEach(v=>{
+              if(v.isSelected){
+
+                  totalPrice += v.buycount * v.sell_price;
+              }
+          })
+          return totalPrice;
     }
   }
 };
