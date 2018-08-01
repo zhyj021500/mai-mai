@@ -25,6 +25,8 @@ import Vuex from 'vuex'
 
 //给全局axios默认值每个请求的配置默认值
 axios.defaults.baseURL = 'http://47.106.148.205:8899';
+//让ajax携带cookie
+axios.defaults.withCredentials=true;
 //把axios对象放入vue的原型中 公用
 Vue.prototype.axios = axios;
 // 注册
@@ -38,6 +40,7 @@ Vue.filter('cuttime', function (value) {
 import VueLazyload from 'vue-lazyload'
 // 引入goodsinfo组件
 import goodsinfo from './components/goodsinfo.vue'
+import { log } from 'core-js';
 
 // 使用路由中间件
 Vue.use(VueRouter);
@@ -81,11 +84,12 @@ const router = new VueRouter({
     }
   ]
 });
+
+
 // 判断数据是否存在
 let buyList = JSON.parse(window.localStorage.getItem('buyList'))||{};
 
 // 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex)
-
 const store = new Vuex.Store({
   state: {
    buyList
@@ -129,7 +133,28 @@ const store = new Vuex.Store({
     }
   }
 });
+//路由守卫
+router.beforeEach((to, from, next) => {
+ // console.log(from);
+  
+  // 去订单支付页
+   if(to.path == '/payOrder'){
+     axios.get('/site/account/islogin')
+     .then(response=>{
+       // console.log(response);
+        if(response.data.code == "nologin"){
+         next('/login');
+        }else{
+          next();
+        }
+     })
+     .catch(error=>{
 
+     })
+   }else{
+     next();
+   }
+});
 Vue.config.productionTip = false
 
 new Vue({
