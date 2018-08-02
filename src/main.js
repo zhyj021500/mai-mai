@@ -75,7 +75,7 @@ const router = new VueRouter({
       component: buyCar
     },
     {
-      path:'/payOrder',
+      path:'/payOrder:orderid',
       component: payOrder
     },
     {
@@ -180,7 +180,18 @@ new Vue({
   // 渲染 App组件
   render: h => h(App),
   // 挂载
-  store
+  store,
+//创建前调用
+beforeCreate(){
+  //判断是否登录
+  axios.get('/site/account/islogin').then(response=>{
+    //解决刷新页面 store.state.isLogin回到默认值
+    store.state.isLogin = response.data.code == 'logined';
+  }).catch(error=>{
+
+  })
+}
+  
 });
 // 注册一些逻辑
 window.onbeforeunload = function () {

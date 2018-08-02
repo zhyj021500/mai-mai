@@ -111,9 +111,11 @@
                                 <button class="button">继续购物</button>
 
                             </router-link>
-                            <router-link to="/payOrder">
+                            <!-- <router-link to="/payOrder">
                                 <button>立即结算</button>
-                            </router-link>
+                            </router-link> -->
+                            <!--   需要带上数据过去 所以使用点击事件 router.push 进行跳转 --> 
+                            <button @click="toPayOrder" class="submit">立即结算</button>
                         </div>
                     </div>
                     <!--购物车底部-->
@@ -221,6 +223,23 @@ export default {
       this.buyCarMessage.splice(this.delIndex, 1);
       //关闭对话框
       this.showModal = false;
+    },
+    //点击立即结算带数据跳路由
+    toPayOrder(){
+        let ids ='';
+        this.buyCarMessage.forEach(v=>{
+            if (v.isSelected) {
+                ids += v.id;
+                ids +=',';
+            }
+        })
+        if(ids == ''){
+            this.$Message.error('要选项商品(⊙o⊙)哦');
+            return;
+        }
+        ids = ids.slice(0,-1);
+         // 跳转地址
+        this.$router.push('/payOrder'+ids);
     }
   },
   computed: {
