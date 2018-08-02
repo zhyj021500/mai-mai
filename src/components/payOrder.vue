@@ -320,7 +320,14 @@ export default {
                 //console.log(response);
                  // 订单创建成功之后 删除买了的商品
                  console.log(this.orderInfo.goodsids);
-                 
+                 let ids = this.orderInfo.goodsids.split(',');
+                 console.log(ids);
+                 ids.forEach(v=>{
+                     // 通知vuex删除对应的数据
+                     this.$store.commit('delGoodById',v);
+                 })
+                  // 代码跳转
+                  this.$router.push('/orderInfo/'+response.data.message.orderid)
             })
             .catch(error => {
                 console.log(error);

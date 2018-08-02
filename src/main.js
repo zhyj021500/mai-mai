@@ -128,10 +128,11 @@ const store = new Vuex.Store({
    changeLogin(state,isLogin){
      state.isLogin = isLogin;
    },
-      // 修改来时的路由
+    // 修改来时的路由
     rememberFromPath(state,path){
       state.fromPath = path;
     }
+
   },
   getters:{
     totalCount(state) {
