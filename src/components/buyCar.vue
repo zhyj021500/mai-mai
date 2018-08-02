@@ -190,7 +190,7 @@ export default {
           // 通过id 获取购物车数据中的 加入购物车的数量
           v.buycount = buyCar[v.id];
           // 是否选中
-          v.isSelected = true;
+          v.isSelected = false;
         });
 
         // vue 开始跟踪 {id,价格,图片,buycount}
@@ -239,7 +239,7 @@ export default {
         }
         ids = ids.slice(0,-1);
          // 跳转地址
-        this.$router.push('/payOrder'+ids);
+        this.$router.push('/payOrder/'+ids);
     }
   },
   computed: {

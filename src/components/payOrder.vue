@@ -48,23 +48,23 @@
                             </h2>
                             <div id="orderForm" name="orderForm" url="">
                                 <!-- 自己新增的表单元素 element-ui中的 -->
-                                <el-form-item  label="收货人姓名:" prop="accept_name">
+                                <el-form-item label="收货人姓名:" prop="accept_name">
                                     <el-input style="width:500px" v-model="orderInfo.accept_name"></el-input>
                                 </el-form-item>
                                 <!-- 入口 -->
-                               <el-form-item  label="所属地区:" prop="">
+                                <el-form-item label="所属地区:" prop="">
                                     <VDistpicker @selected="selected($event)" :province="orderInfo.area.province.value" :city="orderInfo.area.city.value" :area="orderInfo.area.area.value"></VDistpicker>
                                 </el-form-item>
-                                <el-form-item  label="收货人地址:" prop="address">
+                                <el-form-item label="收货人地址:" prop="address">
                                     <el-input style="width:500px" v-model="orderInfo.address"></el-input>
                                 </el-form-item>
-                                <el-form-item  label="手机号:" prop="mobile">
+                                <el-form-item label="手机号:" prop="mobile">
                                     <el-input style="width:500px" v-model="orderInfo.mobile"></el-input>
                                 </el-form-item>
-                                 <el-form-item label="邮箱:" prop="email">
-                                    <el-input style="width:500px"  v-model="orderInfo.email"></el-input>
+                                <el-form-item label="邮箱:" prop="email">
+                                    <el-input style="width:500px" v-model="orderInfo.email"></el-input>
                                 </el-form-item>
-                                  <el-form-item  label="邮编:" prop="post_code">
+                                <el-form-item label="邮编:" prop="post_code">
                                     <el-input style="width:200px" v-model="orderInfo.post_code"></el-input>
                                 </el-form-item>
                                 <h2 class="slide-tit">
@@ -74,8 +74,9 @@
                                     <!--取得一个DataTable-->
                                     <li>
                                         <label>
-                                            <input name="payment_id" type="radio" onclick="paymentAmountTotal(this);" value="1">
-                                            <input name="payment_price" type="hidden" value="0.00">在线支付
+                                            <!-- <input name="payment_id" type="radio" onclick="paymentAmountTotal(this);" value="1">
+                                            <input name="payment_price" type="hidden" value="0.00">在线支付 -->
+                                            <el-radio v-model="orderInfo.payment_id" label="6">在线支付</el-radio>
                                             <em>手续费：0.00元</em>
                                         </label>
                                     </li>
@@ -87,10 +88,11 @@
                                     <!--取得一个DataTable-->
                                     <li>
                                         <label>
-                                            <input name="express_id" type="radio" onclick="freightAmountTotal(this);" value="1" datatype="*" sucmsg=" ">
-                                            <input name="express_price" type="hidden" value="20.00">顺丰快递
-                                            <em>费用：20.00元</em>
-                                            <span class="Validform_checktip"></span>
+                                            <el-radio-group v-model="orderInfo.express_id" @change='expressChange($event)'>
+                                                <el-radio :label="1">顺丰快递(20元)</el-radio>
+                                                <el-radio :label="2">圆通快递(15元)</el-radio>
+                                                <el-radio :label="3">申通快递(14元)</el-radio>
+                                            </el-radio-group>
                                         </label>
                                     </li>
                                 </ul>
@@ -106,24 +108,25 @@
                                             <th width="84" align="center">购买数量</th>
                                             <th width="104" align="left">金额(元)</th>
                                         </tr>
-                                        <tr>
+                                        <tr v-for="(item, index) in goodsList" :key="item.id">
                                             <td width="68">
+
                                                 <a target="_blank" href="/goods/show-89.html">
-                                                    <img src="http://39.108.135.214:8899/upload/201504/20/thumb_201504200046589514.jpg" class="img">
+                                                    <img :src="item.img_url" class="img">
                                                 </a>
                                             </td>
                                             <td>
-                                                <a target="_blank" href="/goods/show-89.html">小米（Mi）小米Note 16G双网通版</a>
+                                                <a target="_blank" href="/goods/show-89.html">{{item.title}}</a>
                                             </td>
                                             <td>
                                                 <span class="red">
-                                                    ￥2299.00
+                                                    {{item.sell_price}}
                                                 </span>
                                             </td>
-                                            <td align="center">1</td>
+                                            <td align="center">{{item.buycount}}</td>
                                             <td>
                                                 <span class="red">
-                                                    ￥2299.00
+                                                    {{item.sell_price*item.buycount}}
                                                 </span>
                                             </td>
                                         </tr>
@@ -138,27 +141,30 @@
                                         <dl>
                                             <dt>订单备注(100字符以内)</dt>
                                             <dd>
-                                                <textarea name="message" class="input" style="height:35px;"></textarea>
+                                                <textarea v-model="orderInfo.message" name="message" class="input" style="height:35px;"></textarea>
                                             </dd>
                                         </dl>
                                     </div>
                                     <div class="right-box">
                                         <p>
                                             商品
-                                            <label class="price">1</label> 件&nbsp;&nbsp;&nbsp;&nbsp; 商品金额：￥
-                                            <label id="goodsAmount" class="price">2299.00</label> 元&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <label class="price">{{totalCount}}</label> 件&nbsp;&nbsp;&nbsp;&nbsp; 商品金额：￥
+                                            <label id="goodsAmount" class="price">{{totalPrice}}</label> 元&nbsp;&nbsp;&nbsp;&nbsp;
                                         </p>
                                         <p>
                                             运费：￥
-                                            <label id="expressFee" class="price">0.00</label> 元
+                                            <label id="expressFee" class="price">{{orderInfo.expressMoment}}</label> 元
                                         </p>
                                         <p class="txt-box">
                                             应付总金额：￥
-                                            <label id="totalAmount" class="price">2299.00</label>
+                                            <label id="totalAmount" class="price">{{orderInfo.goodsAmount}}</label>
                                         </p>
                                         <p class="btn-box">
-                                            <a class="btn button" href="/cart.html">返回购物车</a>
-                                            <a id="btnSubmit" class="btn submit">确认提交</a>
+                                            <router-link to="/buyCar">
+                                                <button class="btn button" href="/cart.html">返回购物车</button>
+                                            </router-link>
+                                            <!-- <a class="btn button" href="/cart.html">返回购物车</a> -->
+                                            <a @click="submitForm('orderInfo')" id="btnSubmit" class="btn submit">确认提交</a>
                                         </p>
                                     </div>
                                 </div>
@@ -172,7 +178,7 @@
 </template>
 <script>
 //导入三级联动
-import VDistpicker from 'v-distpicker';
+import VDistpicker from "v-distpicker";
 export default {
   name: "payOrder",
   data: function() {
@@ -195,12 +201,12 @@ export default {
       }
     };
     //邮箱
-        let validateEmail = (rule, value, callback) => {
+    let validateEmail = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入邮箱"));
       } else {
         // 定义正则规则
-        let reg =/\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+        let reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
         //验证
         if (reg.test(value)) {
           callback();
@@ -209,8 +215,8 @@ export default {
         }
       }
     };
-       //邮编
-        let validatePostCode = (rule, value, callback) => {
+    //邮编
+    let validatePostCode = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请输入邮编"));
       } else {
@@ -225,13 +231,15 @@ export default {
       }
     };
     return {
+      //商品信息
+      goodsList: [],
       orderInfo: {
+        //总金额
+        goodsAmount: 0,
+        //快递费
+        expressMoment: 0,
         accept_name: "小明",
-        address: "中粮大厦2栋3楼305",
-        mobile: "18912344321",
-        email:'xiaoming@163.com',
-        post_code:'',
-          area: {
+        area: {
           province: {
             code: "430000",
             value: "湖南省"
@@ -245,6 +253,21 @@ export default {
             value: "衡南县"
           }
         },
+        address: "中粮大厦2栋3楼305",
+        mobile: "18912344321",
+        email: "xiaoming@163.com",
+        post_code: "430422",
+
+        //支付方式id
+        payment_id: "6",
+        //配送方式id
+        express_id: 0,
+
+        //订单备注
+        message: "",
+        //商品的ids
+        goodsids: "",
+        cargoodsobj: "" // id 跟数量的关系
       },
       rules: {
         accept_name: [
@@ -256,21 +279,113 @@ export default {
           { min: 2, message: "请输入的详细一些哦", trigger: "blur" }
         ],
         mobile: [{ validator: validateMobile, trigger: "blur" }],
-         email: [{ validator: validateEmail, trigger: "change" }],
-          post_code: [{ validator: validatePostCode, trigger: "change" }]
+        email: [{ validator: validateEmail, trigger: "change" }],
+        post_code: [{ validator: validatePostCode, trigger: "change" }]
       }
     };
   },
-  methods:{
-      selected($event){
-          console.log($event);
-          
+  methods: {
+    //三级联动选择的地区
+    selected($event) {
+      // console.log($event);
+      this.orderInfo.area = $event;
+    },
+    //快递的选择
+    expressChange(value) {
+      // console.log(value);
+      switch (value) {
+        case 1:
+          this.orderInfo.expressMoment = 20;
+          break;
+        case 2:
+          this.orderInfo.expressMoment = 15;
+          break;
+        case 3:
+          this.orderInfo.expressMoment = 14;
+          break;
       }
+      // console.log(this.orderInfo.expressMoment);
+      //计算总金额
+      this.orderInfo.goodsAmount =
+        this.totalPrice + this.orderInfo.expressMoment;
+    },
+    //提交数据
+    submitForm(formName) {
+      //重新校验一次 参数是校验返回结果
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.axios
+            .post("/site/validate/order/setorder", this.orderInfo)
+            .then(response => {
+                //console.log(response);
+                 // 订单创建成功之后 删除买了的商品
+                 console.log(this.orderInfo.goodsids);
+                 
+            })
+            .catch(error => {
+                console.log(error);
+                
+            });
+        } else {
+          this.$Message.error("哥们,有数据没填呢,检查一下呗!");
+          return;
+        }
+      });
+    }
   },
-  components:{
-      VDistpicker
-  }
+  created() {
+    //拿到传过来的商品id
+    let ids = this.$route.params.ids;
+    // console.log(ids);
+    this.axios
+      .get("/site/validate/order/getgoodslist/" + ids)
+      .then(response => {
+        // console.log(response);
+        let goodsList = response.data.message;
+        let buylist = this.$store.state.buyList;
+        //console.log(buylist);
+        goodsList.forEach(v => {
+          v.buycount = buylist[v.id];
+        });
 
+        this.goodsList = goodsList;
+        //计算总金额
+        this.orderInfo.goodsAmount =
+          this.totalPrice + this.orderInfo.expressMoment;
+        //商品的ids
+        this.orderInfo.goodsids = this.$route.params.ids;
+        //获取商品的id和数量
+        let temobj = {};
+        this.goodsList.forEach(v => {
+          temobj[v.id] = v.buycount;
+        });
+        this.orderInfo.cargoodsobj = temobj;
+        //console.log(temobj);
+      })
+      .catch(error => {});
+  },
+  //计算属性
+  computed: {
+    //商品总金额
+    totalPrice() {
+      let price = 0;
+      this.goodsList.forEach(v => {
+        price += v.buycount * v.sell_price;
+      });
+      return price;
+    },
+    //总商品数量
+    totalCount() {
+      let count = 0;
+      this.goodsList.forEach(v => {
+        count += v.buycount;
+      });
+      return count;
+    }
+  },
+  components: {
+    VDistpicker
+  }
 };
 </script>
 <style scoped>

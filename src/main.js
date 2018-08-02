@@ -75,7 +75,7 @@ const router = new VueRouter({
       component: buyCar
     },
     {
-      path:'/payOrder:orderid',
+      path:'/payOrder/:ids',
       component: payOrder
     },
     {
