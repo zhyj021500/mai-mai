@@ -8,6 +8,7 @@ import buyCar from './components/buyCar.vue'
 import payOrder from './components/payOrder.vue'
 import login from './components/login.vue'
 import orderinfo from './components/orderInfo.vue'
+import paySuccess from './components/paySuccess.vue'
 // 引入css
 import './assets/statics/site/css/style.css';
 // 导入ui框架
@@ -89,6 +90,12 @@ const router = new VueRouter({
     {
       path:'/orderinfo/:orderid',
       component: orderinfo,
+      //路由元信息
+      meta: { changelogin: true }
+    },
+    {
+      path:'/paySuccess',
+      component: paySuccess,
       //路由元信息
       meta: { changelogin: true }
     }
