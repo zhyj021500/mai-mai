@@ -73,11 +73,14 @@ const router = new VueRouter({
     },
     {
       path:'/buyCar',
-      component: buyCar
+      component: buyCar,
+      meta: { changelogin: true }
     },
     {
       path:'/payOrder/:ids',
-      component: payOrder
+      component: payOrder,
+     // 路由元信息
+      meta: { changelogin: true }
     },
     {
       path:'/login',
@@ -85,7 +88,9 @@ const router = new VueRouter({
     },
     {
       path:'/orderinfo/:orderid',
-      component: orderinfo
+      component: orderinfo,
+      //路由元信息
+      meta: { changelogin: true }
     }
   ]
 });
@@ -157,7 +162,7 @@ router.beforeEach((to, from, next) => {
   // 保存数据
   store.commit('rememberFromPath',from.path);
   // 去订单支付页
-   if(to.path == '/payOrder'){
+   if(to.meta.changelogin){
      axios.get('/site/account/islogin')
      .then(response=>{
         console.log(response);

@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@xkeshi/vue-qrcode": "^1.0.0",
     "element-ui": "^2.4.5",
     "font-awesome": "^4.7.0",
     "iview": "^3.0.0",
@@ -48,5 +49,18 @@
     "> 1%",
     "last 2 versions",
     "not ie <= 8"
-  ]
+  ],
+  "description": "<<<<<<< HEAD\r # 02.first",
+  "main": "babel.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AutumnFish/SZHMBBB.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AutumnFish/SZHMBBB/issues"
+  },
+  "homepage": "https://github.com/AutumnFish/SZHMBBB#readme"
 }
