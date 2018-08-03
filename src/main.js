@@ -34,8 +34,10 @@ axios.defaults.withCredentials=true;
 //把axios对象放入vue的原型中 公用
 Vue.prototype.axios = axios;
 // 注册
-Vue.filter('cuttime', function (value) {
-  
+Vue.filter('cuttime', function (value,myFormat) {
+  if(myFormat){
+    return moment(value).format("YYYY-MM-DD hh:mm:ss");
+  }
     return moment(value).format("YYYY-MM-DD");
 
 });

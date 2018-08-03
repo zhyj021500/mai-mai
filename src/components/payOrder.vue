@@ -261,7 +261,7 @@ export default {
         //支付方式id
         payment_id: "6",
         //配送方式id
-        express_id: 0,
+        express_id: 1,
 
         //订单备注
         message: "",
@@ -368,6 +368,7 @@ export default {
         });
         this.orderInfo.cargoodsobj = temobj;
         //console.log(temobj);
+        
       })
       .catch(error => {});
   },
