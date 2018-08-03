@@ -35,8 +35,9 @@
                                             </h2>
                                             <div class="list">
                                                 <p>
-                                                    <a href="#/site/member/orderlist" class="">
-                                                        <i class="iconfont icon-arrow-right"></i>交易订单</a>
+                                                    <router-link to="/buyCenter">
+                                                        <i class="iconfont icon-arrow-right"></i>交易订单
+                                                    </router-link>
                                                 </p>
                                             </div>
                                         </li>
@@ -113,10 +114,7 @@
     </div>
 </template>
 <script>
-export default {
-    
-}
+export default {};
 </script>
 <style scoped>
-
 </style>

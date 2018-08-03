@@ -10,6 +10,7 @@ import login from './components/login.vue'
 import orderinfo from './components/orderInfo.vue'
 import paySuccess from './components/paySuccess.vue'
 import personageCenter from './components/personageCenter.vue'
+import buyCenter from './components/buyCenter.vue'
 // 引入css
 import './assets/statics/site/css/style.css';
 // 导入ui框架
@@ -103,6 +104,12 @@ const router = new VueRouter({
     {
       path:'/personageCenter',
       component: personageCenter,
+      //路由元信息
+      meta: { changelogin: true }
+    },
+    {
+      path:'/buyCenter',
+      component: buyCenter,
       //路由元信息
       meta: { changelogin: true }
     }
