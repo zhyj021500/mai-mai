@@ -19,7 +19,8 @@
                         <strong>|</strong>
                     </span>
                     <span v-if="$store.state.isLogin==true"  >
-                        <a href="" class="">会员中心</a>
+                        <router-link to="/personageCenter">会员中心</router-link>
+                        
                         <strong>|</strong>
                         <a @click="logout">退出</a>
                         <strong>|</strong>
