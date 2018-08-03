@@ -97,12 +97,13 @@
                                                     <strong style="color: red;">{{item.order_amount}}</strong>
                                                     <br>{{item.paymentTitle}}
                                                 </td>
-                                                <td align="left">2017-10-25 21:38:15</td>
+                                                <td align="left">{{item.payment_time | cuttTime('YYYY/MM/DD hh:mm:ss')}}</td>
                                                 <td align="left">
                                                     {{item.statusName}}
                                                 </td>
                                                 <td align="left">
-                                                    <a href="#/site/member/orderinfo/12" class="">查看订单</a>
+                                                    <router-link  :to="'/lookOrder/'+item.id">查看订单</router-link>
+                                                    
                                                     <br>
                                                     <router-link v-if="item.status==1" :to="'/orderInfo/'+item.id">去付款</router-link>
                                                     <br>

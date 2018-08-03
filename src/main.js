@@ -11,7 +11,8 @@ import orderinfo from './components/orderInfo.vue'
 import paySuccess from './components/paySuccess.vue'
 import personageCenter from './components/personageCenter.vue'
 import buyCenter from './components/buyCenter.vue'
-// 引入css
+import lookOrder from './components/lookOrder.vue'
+// 引入csslookOrder
 import './assets/statics/site/css/style.css';
 // 导入ui框架
 import ElementUI from "element-ui";
@@ -36,7 +37,7 @@ Vue.prototype.axios = axios;
 // 注册
 Vue.filter('cuttime', function (value,myFormat) {
   if(myFormat){
-    return moment(value).format("YYYY-MM-DD hh:mm:ss");
+    return moment(value).format(myFormat);
   }
     return moment(value).format("YYYY-MM-DD");
 
@@ -109,9 +110,17 @@ const router = new VueRouter({
       //路由元信息
       meta: { changelogin: true }
     },
+    //交易订单
     {
       path:'/buyCenter',
       component: buyCenter,
+      //路由元信息
+      meta: { changelogin: true }
+    },
+    //查看订单
+    {
+      path:'/lookOrder/:orderId',
+      component: lookOrder,
       //路由元信息
       meta: { changelogin: true }
     }
