@@ -319,9 +319,9 @@ export default {
             .then(response => {
                 //console.log(response);
                  // 订单创建成功之后 删除买了的商品
-                 console.log(this.orderInfo.goodsids);
+                
                  let ids = this.orderInfo.goodsids.split(',');
-                 console.log(ids);
+                // console.log(ids);
                  ids.forEach(v=>{
                      // 通知vuex删除对应的数据
                      this.$store.commit('delGoodById',v);
