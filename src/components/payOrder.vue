@@ -237,7 +237,7 @@ export default {
         //总金额
         goodsAmount: 0,
         //快递费
-        expressMoment: 0,
+        expressMoment: 20,
         accept_name: "小明",
         area: {
           province: {
