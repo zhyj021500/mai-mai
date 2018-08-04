@@ -123,7 +123,7 @@ export default {
         .catch(error => {
           console.log(error);
         });
-    }, 200);
+    }, 500);
   },
   components: {
     VueQrcode
